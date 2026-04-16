@@ -32,6 +32,11 @@ dependencies {
     testCompileOnly("org.projectlombok:lombok")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testAnnotationProcessor("org.projectlombok:lombok")
+
+    // Flyway
+    implementation("org.flywaydb:flyway-core:12.3.0")
+    runtimeOnly("org.flywaydb:flyway-database-postgresql:12.3.0")
+
 }
 
 tasks.withType<Test> {
