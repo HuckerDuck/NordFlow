@@ -34,8 +34,8 @@ dependencies {
     testAnnotationProcessor("org.projectlombok:lombok")
 
     // Flyway
-    implementation("org.flywaydb:flyway-core:12.3.0")
-    runtimeOnly("org.flywaydb:flyway-database-postgresql:12.3.0")
+    implementation("org.springframework.boot:spring-boot-starter-flyway")
+    runtimeOnly("org.flywaydb:flyway-database-postgresql")
 
 }
 
