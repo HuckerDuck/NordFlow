@@ -1,5 +1,5 @@
 package se.nordflow.auth.user.common;
 
-public enum roleEnums {
+public enum RoleEnums {
     USER, ADMIN
 }
