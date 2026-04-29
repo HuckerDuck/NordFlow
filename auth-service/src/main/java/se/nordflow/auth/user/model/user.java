@@ -49,6 +49,7 @@ public class user {
     @PrePersist
     private void prePersist(){
         createdDate = LocalDateTime.now();
+        updatedDate = LocalDateTime.now();
 
         if (role == null){
             role = roleEnums.USER;
