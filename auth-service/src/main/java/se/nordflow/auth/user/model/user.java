@@ -5,7 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import se.nordflow.auth.user.common.roleEnums;
+import se.nordflow.auth.user.common.RoleEnums;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -20,14 +20,13 @@ public class user {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Setter(AccessLevel.NONE)
     private UUID id;
-    private String username;
     private String password;
     private String email;
 
     @Column (name = "first_name")
     private String firstName;
 
-    @Column (name = "first_name")
+    @Column (name = "last_name")
     private String lastName;
 
     @Column (name = "phone_number")
@@ -35,7 +34,7 @@ public class user {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
-    private roleEnums role;
+    private RoleEnums role;
 
     @Column(name = "account_enabled")
     private Boolean enabled;
@@ -52,7 +51,11 @@ public class user {
         updatedDate = LocalDateTime.now();
 
         if (role == null){
-            role = roleEnums.USER;
+            role = RoleEnums.USER;
+        }
+
+        if (enabled == null){
+            enabled = true;
         }
     }
 }
