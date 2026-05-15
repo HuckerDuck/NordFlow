@@ -6,5 +6,5 @@ import se.nordflow.auth.user.dto.ResponseDTO;
 
 public interface UserService {
     ResponseDTO registerAUser (RegisterDTO registerDTO);
-    Void loginAUser (LoginDTO loginDTO);
+    String loginAUser (LoginDTO loginDTO);
 }
