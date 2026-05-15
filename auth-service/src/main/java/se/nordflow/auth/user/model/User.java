@@ -14,8 +14,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Table(name = "users")
 @Entity
-public class user {
-
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Setter(AccessLevel.NONE)
