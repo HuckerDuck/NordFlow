@@ -13,11 +13,11 @@ import se.nordflow.auth.user.service.UserService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/user")
+@RequestMapping("/api/auth")
 public class UserController {
     private final UserService userService;
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<ResponseDTO> registerAUser (@Valid @RequestBody RegisterDTO dto){
         ResponseDTO response = userService.registerAUser(dto);
         return ResponseEntity.ok(response);
