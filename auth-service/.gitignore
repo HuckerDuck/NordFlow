@@ -39,4 +39,4 @@ out/
 # IntelliJ IDEA #
 .idea/
 *.iml
-!/NOTES.md
+/NOTES.md
