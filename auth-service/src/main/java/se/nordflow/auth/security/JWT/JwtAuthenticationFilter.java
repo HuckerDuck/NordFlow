@@ -62,7 +62,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private String extractTokenFromHeader (HttpServletRequest request){
         String header = request.getHeader("Authorization");
 
-        if (header != null && header.startsWith("Bearar")){
+        if (header != null && header.startsWith("Bearer")){
             return header.substring(7);
         }
 
