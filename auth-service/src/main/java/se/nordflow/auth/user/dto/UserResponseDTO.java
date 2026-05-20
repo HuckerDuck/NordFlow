@@ -1,9 +1,8 @@
 package se.nordflow.auth.user.dto;
 
-public record ResponseDTO(
-        String email,
+public record    UserResponseDTO (
         String firstName,
         String lastName,
-        String phoneNumber
+        String email
 ) {
 }

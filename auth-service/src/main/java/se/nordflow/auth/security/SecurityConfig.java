@@ -10,6 +10,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import se.nordflow.auth.security.JWT.JwtAuthenticationFilter;
+import se.nordflow.auth.security.JWT.JwtTokenProvider;
 
 @Configuration
 @EnableWebSecurity
@@ -31,11 +34,18 @@ public class SecurityConfig {
 
 
     @Bean
-    public SecurityFilterChain securityFilterChain (HttpSecurity http){
+    public SecurityFilterChain securityFilterChain (HttpSecurity http, JwtTokenProvider jwtTokenProvider) throws Exception{
         http
+                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, userDetailsService),
+                        UsernamePasswordAuthenticationFilter.class)
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll()
+                        // Open to the public
+                        // Login and registration
+                        .requestMatchers("/api/auth/**").permitAll()
+
+                        // Needs to be logged in
+                        .requestMatchers("/api/user/**").authenticated()
                 );
 
         return http.build();
