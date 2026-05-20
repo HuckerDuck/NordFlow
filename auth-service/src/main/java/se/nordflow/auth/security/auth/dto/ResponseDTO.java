@@ -1,4 +1,4 @@
-package se.nordflow.auth.user.dto;
+package se.nordflow.auth.security.auth.dto;
 
 public record ResponseDTO(
         String email,
