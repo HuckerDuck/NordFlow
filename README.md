@@ -1,5 +1,7 @@
 # NordFlow
 
+[![Tests](https://github.com/HuckerDuck/NordFlow/actions/workflows/tests.yml/badge.svg?branch=development)](https://github.com/HuckerDuck/NordFlow/actions/workflows/tests.yml)
+
 Event-driven order and inventory platform for a Nordic PC components store.
 
 Customers browse graphics cards, CPUs and other parts, place orders and follow the order status. Behind the scenes the services talk to each other through Kafka events, so an order is only confirmed when the stock has actually been reserved.

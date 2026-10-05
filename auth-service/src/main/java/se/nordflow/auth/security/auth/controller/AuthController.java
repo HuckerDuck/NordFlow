@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import se.nordflow.auth.security.auth.dto.LoginDTO;
+import se.nordflow.auth.security.auth.dto.LoginResponseDTO;
 import se.nordflow.auth.security.auth.dto.RegisterDTO;
 import se.nordflow.auth.security.auth.dto.ResponseDTO;
 import se.nordflow.auth.security.auth.service.AuthService;
@@ -25,8 +26,8 @@ public class AuthController {
     }
 
     @PostMapping ("/login")
-    public ResponseEntity<String> loginAUser (@Valid @RequestBody LoginDTO loginDTO){
+    public ResponseEntity<LoginResponseDTO> loginAUser (@Valid @RequestBody LoginDTO loginDTO){
         String token = userService.loginAUser(loginDTO);
-        return ResponseEntity.ok(token);
+        return ResponseEntity.ok(new LoginResponseDTO(token));
     }
 }
