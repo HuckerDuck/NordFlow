@@ -1,15 +1,16 @@
 # Build it
+# uses the gradle wrapper so docker gets the same gradle version as the project
 
-FROM gradle:8.13-jdk21 AS builder
+FROM eclipse-temurin:21-jdk-alpine AS builder
 
 WORKDIR /app
 
-COPY build.gradle.kts settings.gradle.kts ./
+COPY gradlew build.gradle.kts settings.gradle.kts ./
 COPY gradle ./gradle
-RUN gradle dependencies --no-daemon || true
+RUN chmod +x gradlew && ./gradlew dependencies --no-daemon > /dev/null
 
 COPY src ./src
-RUN gradle bootJar --no-daemon -x test
+RUN ./gradlew bootJar --no-daemon -x test
 
 # Run it
 FROM eclipse-temurin:21-jre-alpine
