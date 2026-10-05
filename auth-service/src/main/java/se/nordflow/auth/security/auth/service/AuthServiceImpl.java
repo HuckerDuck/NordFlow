@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import se.nordflow.auth.security.JWT.JwtTokenProvider;
 import se.nordflow.auth.user.common.exception.EmailAlreadyExistsException;
+import se.nordflow.auth.user.common.exception.InvalidCredentialsException;
 import se.nordflow.auth.security.auth.dto.LoginDTO;
 import se.nordflow.auth.security.auth.dto.RegisterDTO;
 import se.nordflow.auth.security.auth.dto.ResponseDTO;
@@ -43,12 +44,10 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public String loginAUser(LoginDTO loginDTO) {
         User user = userRepository.findByEmail(loginDTO.email())
-                .orElseThrow(()-> new RuntimeException("User with that email was not found"));
+                .orElseThrow(InvalidCredentialsException::new);
 
         if (!passwordEncoder.matches(loginDTO.password(), user.getPassword())) {
-            throw new RuntimeException("Password isn't correct");
-
-
+            throw new InvalidCredentialsException();
         }
 
         return jwtTokenProvider.generateToken(userDetailsService.loadUserByUsername(user.getEmail()));
