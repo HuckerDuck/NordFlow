@@ -4,10 +4,10 @@ services:
     container_name: nordflow-postgres
     environment:
       POSTGRES_DB: nordflow_auth
-      POSTGRES_USER: nordflow
-      POSTGRES_PASSWORD: pass123
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
-      - "5433:5432"
+      - "${DB_PORT}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
