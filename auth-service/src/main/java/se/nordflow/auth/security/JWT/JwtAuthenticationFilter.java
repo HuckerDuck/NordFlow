@@ -15,6 +15,7 @@ import java.io.IOException;
 
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+   private static final String BEARER_PREFIX = "Bearer ";
    private final JwtTokenProvider tokenProvider;
    private final UserDetailsService userDetailsService;
 
@@ -62,8 +63,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private String extractTokenFromHeader (HttpServletRequest request){
         String header = request.getHeader("Authorization");
 
-        if (header != null && header.startsWith("Bearer")){
-            return header.substring(7);
+        if (header != null && header.startsWith(BEARER_PREFIX)){
+            return header.substring(BEARER_PREFIX.length());
         }
 
         return null;
