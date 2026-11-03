@@ -3,13 +3,14 @@ services:
     image: postgres:16-alpine
     container_name: nordflow-postgres
     environment:
-      POSTGRES_DB: nordflow_auth
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
       - "${DB_PORT}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      # creates the databases for all services. See the script for details
+      - ./docker/postgres/init:/docker-entrypoint-initdb.d:ro
 
 volumes:
   postgres_data:
