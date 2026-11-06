@@ -32,7 +32,7 @@ public abstract class AbstractIntegrationTest {
     static void testProperties(DynamicPropertyRegistry registry) {
         registry.add("JWT_SECRET", AbstractIntegrationTest::randomJwtSecret);
         registry.add("JWT_EXPIRATION_MS", () -> "3600000");
-        registry.add("SERVER_PORT", () -> "0");
+        registry.add("AUTH_SERVER_PORT", () -> "0");
     }
 
     // A new random key for every test run, 32 bytes as HS256 requires
