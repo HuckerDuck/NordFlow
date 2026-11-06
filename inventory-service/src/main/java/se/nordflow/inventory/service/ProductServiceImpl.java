@@ -55,6 +55,27 @@ public class ProductServiceImpl implements ProductService {
         return toResponseDTO(savedProduct);
     }
 
+    @Override
+    public ProductResponseDTO updateProduct(UUID id, ProductRequestDTO requestDTO) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException(id));
+
+        //? Only check the SKU if it is changed, otherwise it would find itself
+        boolean skuIsChanged = !product.getSku().equals(requestDTO.sku());
+        if (skuIsChanged && productRepository.existsBySku(requestDTO.sku())) {
+            throw new SkuAlreadyExistsException(requestDTO.sku());
+        }
+
+        product.setSku(requestDTO.sku());
+        product.setName(requestDTO.name());
+        product.setCategory(requestDTO.category());
+        product.setPrice(requestDTO.price());
+        product.setStockQuantity(requestDTO.stockQuantity());
+
+        Product savedProduct = productRepository.save(product);
+        return toResponseDTO(savedProduct);
+    }
+
     private ProductResponseDTO toResponseDTO(Product product) {
         //? What can actually be bought right now
         int availableQuantity = product.getStockQuantity() - product.getReservedQuantity();
