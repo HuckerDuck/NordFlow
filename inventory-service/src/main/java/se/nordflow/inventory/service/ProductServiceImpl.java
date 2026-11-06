@@ -2,8 +2,10 @@ package se.nordflow.inventory.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import se.nordflow.inventory.dto.ProductRequestDTO;
 import se.nordflow.inventory.dto.ProductResponseDTO;
 import se.nordflow.inventory.exception.ProductNotFoundException;
+import se.nordflow.inventory.exception.SkuAlreadyExistsException;
 import se.nordflow.inventory.model.Category;
 import se.nordflow.inventory.model.Product;
 import se.nordflow.inventory.repository.ProductRepository;
@@ -34,6 +36,23 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new ProductNotFoundException(id));
 
         return toResponseDTO(product);
+    }
+
+    @Override
+    public ProductResponseDTO createProduct(ProductRequestDTO requestDTO) {
+        if (productRepository.existsBySku(requestDTO.sku())) {
+            throw new SkuAlreadyExistsException(requestDTO.sku());
+        }
+
+        Product product = new Product();
+        product.setSku(requestDTO.sku());
+        product.setName(requestDTO.name());
+        product.setCategory(requestDTO.category());
+        product.setPrice(requestDTO.price());
+        product.setStockQuantity(requestDTO.stockQuantity());
+
+        Product savedProduct = productRepository.save(product);
+        return toResponseDTO(savedProduct);
     }
 
     private ProductResponseDTO toResponseDTO(Product product) {
