@@ -1,7 +1,12 @@
 package se.nordflow.inventory.exception;
 
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -15,10 +20,32 @@ public class GlobalExceptionHandler {
         return buildResponse(HttpStatus.NOT_FOUND, exception.getMessage());
     }
 
+    @ExceptionHandler(SkuAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponseDTO> handleSkuAlreadyExists(SkuAlreadyExistsException exception) {
+        return buildResponse(HttpStatus.CONFLICT, exception.getMessage());
+    }
+
     //? For example ?category=TOASTER or an id that is not a UUID
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<ErrorResponseDTO> handleWrongType(MethodArgumentTypeMismatchException exception) {
         return buildResponse(HttpStatus.BAD_REQUEST, "Invalid value for " + exception.getName() + ": " + exception.getValue());
+    }
+
+    // Thrown by @Valid when a DTO breaks one of its rules
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponseDTO> handleValidation(MethodArgumentNotValidException exception) {
+        Map<String, String> fieldErrors = new HashMap<>();
+        exception.getBindingResult().getFieldErrors()
+                .forEach(fieldError -> fieldErrors.put(fieldError.getField(), fieldError.getDefaultMessage()));
+
+        ErrorResponseDTO body = new ErrorResponseDTO(
+                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                "Validation failed",
+                fieldErrors,
+                LocalDateTime.now()
+        );
+        return ResponseEntity.badRequest().body(body);
     }
 
     private ResponseEntity<ErrorResponseDTO> buildResponse(HttpStatus status, String message) {
